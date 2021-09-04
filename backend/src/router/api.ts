@@ -87,8 +87,10 @@ router.post('/verify', async ctx => {
         return
     }
     sendVerifyEmail(ctx.query.email as string, jwt.sign({
-        email: ctx.query.email
+        email: ctx.query.email,
+        exp: Math.floor(Date.now() / 1000) + 60 * 5
     }, process.env.KEY))
+    ctx.body = new RestResponse(RestCode.Ok, null)
 })
 
 export default router

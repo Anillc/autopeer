@@ -1,4 +1,6 @@
 import dotenv from 'dotenv'
+dotenv.config()
+
 import 'reflect-metadata'
 
 import Koa, { Context } from 'koa'
@@ -11,7 +13,6 @@ import router from './router'
 import * as entities from './entities'
 import { RestCode, RestResponse } from './utils'
 
-dotenv.config()
 
 const app = new Koa({
     keys: [process.env.KEY]

@@ -48,9 +48,10 @@ export async function getASNEmail(asn: string) {
 
 export function sendVerifyEmail(to: string, token: string) {
     const msg = new Message({
+        from: process.env.EMAIL_FROM,
         to: `${to} <${to}>`,
         subject: 'Verify your email',
         text: `your token: ${token}`
     })
-    smtp.send(msg, function() {})
+    smtp.send(msg, function() { })
 }
