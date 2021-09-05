@@ -30,20 +30,18 @@ export const checkFields = (obj: any, names: string[]) => _(obj)
 
 export async function getASNEmail(asn: string) {
     const asinfo = (await superagent.get('https://explorer.burble.com/api/registry/aut-num/AS' + asn)).body['aut-num/AS' + asn]?.Attributes
-    if (!asinfo) return false
+    if (!asinfo) return null
     const persons = _(asinfo)
         .filter(attr => ['admin-c', 'tech-c'].includes(attr[0]))
         .sortBy(attr => attr[0])
         .map(attr => /^\[(.+)\]\(.+\)$/.exec(attr[1])[1])
         .reverse()
         .value()
-    if (persons.length === 0) {
-        return false
-    }
+    if (persons.length === 0) return null
     const personBody = (await superagent.get('https://explorer.burble.com/api/registry/person/' + persons[0])).body
-    if (!personBody) return false
+    if (!personBody) return null
     const personEmail = personBody['person/' + persons[0]]?.Attributes?.find(attr => attr[0] === 'contact')[1]
-    return personEmail
+    return personEmail as string
 }
 
 export function sendVerifyEmail(to: string, token: string) {
@@ -53,5 +51,5 @@ export function sendVerifyEmail(to: string, token: string) {
         subject: 'Verify your email',
         text: `your token: ${token}`
     })
-    smtp.send(msg, function() { })
+    smtp.send(msg, function () { })
 }

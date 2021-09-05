@@ -34,6 +34,7 @@ router.get('/peer', async ctx => {
     ctx.body = new RestResponse(RestCode.Ok, null, ctx.user.peers)
 })
 
+//TODO: avoid injecting
 router.post('/peer', async ctx => {
     const query = ctx.query as Record<string, string>
     let port: number
