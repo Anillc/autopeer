@@ -1,0 +1,22 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "author": "anillc",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.2.2",
+    "coffeescript": "^2.5.1",
+    "parcel-bundler": "^1.12.5",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "dependencies": {
+    "superagent": "^6.1.0",
+    "vue": "^2.0.0",
+    "vue-hot-reload-api": "^2.3.4",
+    "vue-router": "^3.5.2",
+    "vuetify": "^2.5.8",
+    "vuex": "^3.0 || ^4.0.0-rc",
+    "vuex-persistedstate": "^4.0.0"
+  }
+}
