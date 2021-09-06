@@ -43,17 +43,18 @@ const ASN_REGEX = /^(424242|420127)\d{4}$/
 router.post('/peer', async ctx => {
     const query = ctx.query as Record<string, string>
     let port: number
-    if (!checkFields(query, ['server', 'address', 'port', 'asn', 'v4', 'linkLocal']) || !(port = parseInt(query.port))) {
+    let serverId: number
+    if (!checkFields(query, ['serverId', 'address', 'port', 'asn', 'v4', 'linkLocal']) || !(port = parseInt(query.port)) || !(serverId = parseInt(query.server))) {
         ctx.body = new RestResponse(RestCode.Error, 'Invalid params')
         return
     }
     const { address, asn, v4, linkLocal } = query
     if (!(V6_REGEX.test(address) || V4_REGEX.test(address) || DOMAIN_REGEX.test(address))
-            && !V4_REGEX.test(v4) && !LINK_LOCAL_REGEX.test(linkLocal) && !ASN_REGEX.test(asn)) {
+        && !V4_REGEX.test(v4) && !LINK_LOCAL_REGEX.test(linkLocal) && !ASN_REGEX.test(asn)) {
         ctx.body = new RestResponse(RestCode.Error, 'Invalid params')
         return
     }
-    const server = await Server.findOne({ name: query.server })
+    const server = await Server.findOne(serverId)
     if (!server) {
         ctx.body = new RestResponse(RestCode.Error, 'Unknown server')
         return
@@ -103,6 +104,13 @@ router.post('/verify', async ctx => {
         exp: Math.floor(Date.now() / 1000) + 60 * 5
     }, process.env.KEY))
     ctx.body = new RestResponse(RestCode.Ok, null)
+})
+
+router.get('/servers', async ctx => {
+    const servers = await Server.find({
+        select: ['id', 'name', 'description', 'publicKey', 'dn42v4', 'linkLocal', 'asn']
+    })
+    ctx.body = new RestResponse(RestCode.Ok, null, servers)
 })
 
 export default router
