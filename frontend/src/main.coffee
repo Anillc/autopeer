@@ -27,9 +27,8 @@ router = new VueRouter
 
 router.afterEach -> document.querySelector('html').scroll 0, 0
 
-# TODO
-# router.beforeEach ->
-#   if()
+router.beforeEach (to) ->
+  if to.login && 
 
 vuetify = new Vuetify()
 

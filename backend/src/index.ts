@@ -19,12 +19,12 @@ const app = new Koa({
 })
 
 app.use(session({
-    domain: process.env.COOKIE_DOMAIN
+    domain: '.anillc.cn'
 }, app))
 app.use(oauth(app))
 app.use(router.routes())
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: 'https://peer.anillc.cn',
     credentials: true
 }))
 
