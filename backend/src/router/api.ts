@@ -11,6 +11,11 @@ declare module 'koa' {
 
 const router = new Router()
 
+router.get('/logout', ctx => {
+    ctx.session = null
+    ctx.body = new RestResponse(RestCode.Ok, null)
+})
+
 router.use(async (ctx, next) => {
     const profile = ctx.session.grant?.response?.profile
     if (!profile?.login) {
